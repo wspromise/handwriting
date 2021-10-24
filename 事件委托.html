@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      span {
+        /* 相当于虚化了这个元素，像海市蜃楼一样，阻止了点击事件，8K的写法生效 */
+        /* pointer-events: none; */
+      }
+    </style>
+  </head>
+  <body>
+    <ul>
+      <li><span>1</span></li>
+      <li><span>2</span></li>
+      <li><span>3</span></li>
+      <li><span>4</span></li>
+    </ul>
+    <script>
+      let ul = document.querySelector('ul');
+      let liList = document.getElementsByTagName('li');
+
+      // 8K的写法
+      /* ul.addEventListener('click', function (event) {
+              let e = event || window.event;
+              // console.log(e.target.nodeName, e.target.tagName);
+              if (e.target.nodeName.toLowerCase() === 'li') {
+                console.log(11);
+              }
+            }); */
+
+      ul.addEventListener('click', function (event) {
+        let e = event || window.event;
+        // console.log(e.target.nodeName, e.target.tagName);
+        console.log(liList);
+        // node.contains(otherNode) ,otherNode节点是node的后代节点或是node节点本身，返回布尔值
+        let flag = [].some.call(liList, (item) => item.contains(e.target));
+        console.log(flag, e.target);
+      });
+
+      // 20K的写法
+      // function delegate(element, eventType, selector, fn) {
+      //   element.addEventListener(eventType, (e) => {
+      //     let el = e.target;
+      //     while (!el.matches(selector)) {
+      //       if (element === el) {
+      //         el = null;
+      //         break;
+      //       }
+      //       el = el.parentNode;
+      //     }
+      //     el && fn.call(el, e, el);
+      //   });
+      //   return element;
+      // }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>事件</title>
+  </head>
+
+  <body>
+    <script>
+      // class Event {
+      // 	constructor() {
+      // 		this.events = {}
+      // 	}
+      // 	// 绑定事件
+      // 	on(eventName, callback) {
+      // 		// 第二次绑定
+      // 		if (this.events[eventName]) {
+      // 			this.events[eventName].push(callback)
+      // 			return;
+      // 		}
+      // 		// 第一次绑定
+      // 		this.events[eventName] = [callback]
+      // 	}
+      // 	// 绑定一次性事件
+      // 	once(eventName, callback) {
+      // 		const cb = (...args) => {
+      // 			// 触发函数，立马解绑
+      // 			callback(...args)
+      // 			this.off(eventName, cb);
+      // 		}
+      // 		this.on(eventName, cb);
+      // 	}
+
+      // 	// 解绑事件
+      // 	off(eventName, callback) {
+      // 		if (!this.events[eventName]) return;
+      // 		this.events[eventName] = this.events[eventName].filter(item => item !== callback)
+      // 	}
+      // 	// 触发事件
+      // 	emit(eventName, data) {
+      // 		if (!this.events[eventName]) return;
+      // 		this.events[eventName].forEach(item => item(data))
+      // 	}
+      // }
+
+      class Events {
+        constructor() {
+          this.events = {};
+        }
+
+        on(eventName, callback) {
+          let events = this.events;
+          events.eventName
+            ? events.eventName.push(callback)
+            : (events.eventName = [callback]);
+        }
+
+        once(eventName, callback) {
+          let cb = (...args) => {
+            callback(...args);
+            this.off(eventName, cb);
+          };
+
+          this.on(eventName, cb);
+        }
+
+        emit(eventName, data) {
+          let events = this.events;
+          events.eventName &&
+            events.eventName.forEach((callback) => callback(data));
+        }
+
+        off(eventName, callback) {
+          let events = this.events;
+          events.eventName &&
+            (events.eventName = events.eventName.filter(
+              (item) => item !== callback
+            ));
+        }
+      }
+
+      let e = new Events();
+      let f = function (data) {
+        console.log(data, 111);
+      };
+      // e.once('aaa', f);
+      // e.emit('aaa', 100);
+      // e.emit('aaa', 200);
+
+      e.on('aaa', f);
+      e.emit('aaa', 100);
+      e.off('aaa', f);
+      e.emit('aaa', 200);
+    </script>
+  </body>
+</html>

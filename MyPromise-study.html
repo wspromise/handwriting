@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function MyPromise(executor) {
+        this._value = undefined;
+        this._status = 'pending';
+        this._callbacks = [];
+
+        let resolve = (value) => {
+          if (this._status === 'pending') {
+            this._status = 'resolved';
+            this._value = value;
+            this._callbacks.length &&
+              this._callbacks.forEach((cb) => cb.onResolved());
+          }
+        };
+
+        let reject = (reason) => {
+          if (this._status === 'pending') {
+            this._status = 'rejected';
+            this._value = reason;
+            this._callbacks.length &&
+              this._callbacks.forEach((cb) => cb.onRejected());
+          }
+        };
+
+        try {
+          executor(resolve, reject);
+        } catch (e) {
+          reject(e);
+        }
+      }
+
+      MyPromise.prototype.then = function (onResolved, onRejected) {
+        onResolved = onResolved ? onResolved : (value) => value;
+        onRejected = onRejected
+          ? onRejected
+          : (reason) => {
+              throw reason;
+            };
+
+        return new MyPromise((resolve, reject) => {
+          setTimeout(() => {
+            switch (this._status) {
+              case 'resolved':
+                setPromiseStatus(onResolved, this._value, resolve, reject);
+                break;
+
+              case 'rejected':
+                setPromiseStatus(onRejected, this._value, resolve, reject);
+                break;
+
+              default:
+                this._callbacks.push({
+                  onResolved: () => {
+                    setPromiseStatus(onResolved, this._value, resolve, reject);
+                  },
+
+                  onRejected: () => {
+                    setPromiseStatus(onRejected, this._value, resolve, reject);
+                  },
+                });
+                break;
+            }
+          });
+        });
+      };
+
+      MyPromise.prototype.catch = function (onRejected) {
+        return this.then(undefined, onRejected);
+      };
+
+      MyPromise.prototype.finally = function (onResolved) {
+        return new MyPromise((resolve, reject) => {
+          if (this._status === 'pending') {
+            this._callbacks.push({
+              onResolved,
+              onRejected: onResolved,
+            });
+          } else {
+            onResolved();
+          }
+        });
+      };
+
+      MyPromise.prototype.all = function (promises) {
+        let resolveCount = 0;
+        let resolveArr = [];
+
+        return new MyPromise((resolve, reject) => {
+          for (let i = 0; i < promises.length; i++) {
+            let element = promises[i];
+            element.then(
+              (value) => {
+                resolveCount++;
+                resolveArr[i] = value;
+
+                if (resolveCount === promises.length) {
+                  resolve(resolveArr);
+                }
+              },
+              (reason) => {
+                reject(reason);
+              }
+            );
+          }
+        });
+      };
+
+      MyPromise.resolve = function (value) {
+        return new MyPromise((resolve, reject) => {
+          resolve(value);
+        });
+      };
+
+      MyPromise.reject = function (reason) {
+        return new MyPromise((resolve, reject) => {
+          reject(reason);
+        });
+      };
+
+      function setPromiseStatus(onFn, value, resolve, reject) {
+        try {
+          let res = onFn(value);
+          res instanceof MyPromise ? res.then(resolve, reject) : resolve(res);
+        } catch (e) {
+          reject(e);
+        }
+      }
+
+      let p = new MyPromise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(123);
+        }, 1000);
+      });
+
+      p.then(
+        (value) => {
+          console.log(value, 'resolved');
+          return new MyPromise((resolve, reject) => resolve(666));
+        },
+        (reason) => {
+          console.log(reason, 'rejected');
+        }
+      )
+        .catch((reason) => {
+          console.log(reason, 'rejected');
+          return 1;
+        })
+        .then(
+          (value) => {
+            console.log(value, 777);
+            return 100;
+          },
+
+          () => {
+            console.log(888);
+          }
+        )
+        .finally(() => {
+          console.log('finally');
+        });
+    </script>
+  </body>
+</html>

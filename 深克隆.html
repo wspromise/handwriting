@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>深克隆</title>
+  </head>
+
+  <body>
+    <script>
+      /*  function getType(target) {
+         return Object.prototype.toString.call(target).slice(8, -1);
+       }
+
+       function deepClone(obj) {
+         let res;
+         if (getType(obj) === 'Object') {
+           res = {};
+         } else if (getType(obj) === 'Array') {
+           res = [];
+         } else {
+           return obj;
+         }
+         for (let i in obj) {
+           res[i] = deepClone(obj[i]);
+         }
+         return res;
+       } */
+
+      function getDataType(target) {
+        return Object.prototype.toString.call(target).slice(8, -1);
+      }
+
+      function deepClone(obj) {
+        let res;
+        switch (getDataType(obj)) {
+          case 'Object':
+            res = {};
+            break;
+          case 'Array':
+            res = [];
+            break;
+
+          default:
+            return obj;
+            break;
+        }
+        debugger;
+        for (const key in obj) {
+          res[key] = deepClone(obj[key]);
+        }
+
+        return res;
+      }
+
+      let obj = {
+        name: 'ws',
+        hobby: [1, 2, 3, 4],
+        age: {
+          age: 18,
+        },
+
+        say() {
+          console.log(11);
+        },
+      };
+      let b = deepClone(obj);
+      b.age = {};
+      console.log(obj, b);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>快速排序</title>
+  </head>
+
+  <body>
+    <script>
+      // 快速排序
+      let start = performance.now();
+      function quickSort(arr) {
+        const length = arr.length;
+        if (length <= 1) return arr;
+
+        // 取出基准值
+        const value = arr.splice(Math.floor(length / 2), 1)[0];
+
+        let leftArr = [];
+        let rightArr = [];
+
+        for (let index = 0; index < arr.length; index++) {
+          const element = arr[index];
+          if (element < value) {
+            leftArr.push(element);
+          } else {
+            rightArr.push(element);
+          }
+        }
+
+        let newLeftArr = quickSort(leftArr);
+        let newRightArr = quickSort(rightArr);
+        return newLeftArr.concat([value], newRightArr);
+      }
+      let end = performance.now();
+      console.log(end - start);
+
+      var a = quickSort([4, 3, 2, 5, 6, 7, 45]);
+      console.log(a);
+    </script>
+  </body>
+</html>

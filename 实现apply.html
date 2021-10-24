@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>apply</title>
+  </head>
+
+  <body>
+    <script>
+      // apply
+      // Function.prototype.apply2 = function (context, args) {
+      //   var context = context || window;
+      //   context.__proto__.fn = this;
+      //   var res = context.fn(...args);
+      //   delete context.__proto__.fn;
+      //   return res;
+      // };
+      Function.prototype.apply2 = function (context, args) {
+        let ctx = context || window;
+        ctx.__proto__.fn = this;
+        let result = ctx.fn(...args);
+        delete ctx.__proto__.fn;
+        return result;
+      };
+      var obj = {
+        name: 'ws',
+      };
+
+      function f(a) {
+        console.log(this.name, a);
+      }
+      f.apply2(obj, [1, 2, 3]);
+    </script>
+  </body>
+</html>
