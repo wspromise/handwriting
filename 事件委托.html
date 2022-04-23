@@ -8,7 +8,7 @@
     <style>
       span {
         /* 相当于虚化了这个元素，像海市蜃楼一样，阻止了点击事件，8K的写法生效 */
-        /* pointer-events: none; */
+        pointer-events: none;
       }
     </style>
   </head>
@@ -24,7 +24,7 @@
       let liList = document.getElementsByTagName('li');
 
       // 8K的写法
-      /* ul.addEventListener('click', function (event) {
+      /*  ul.addEventListener('click', function (event) {
               let e = event || window.event;
               // console.log(e.target.nodeName, e.target.tagName);
               if (e.target.nodeName.toLowerCase() === 'li') {
@@ -37,7 +37,10 @@
         // console.log(e.target.nodeName, e.target.tagName);
         console.log(liList);
         // node.contains(otherNode) ,otherNode节点是node的后代节点或是node节点本身，返回布尔值
-        let flag = [].some.call(liList, (item) => item.contains(e.target));
+        let flag = [].some.call(liList, (item) => {
+          console.log(e, 111);
+          return item.contains(e.target);
+        });
         console.log(flag, e.target);
       });
 

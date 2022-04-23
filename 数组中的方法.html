@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      // 数组去重
+      /* Array.prototype.unique = function () {
+      	return this.filter((item, index) => this.indexOf(item) === index)
+      }
+
+      var res = [1, 1, 1, 2, 3, 3, 4].unique()
+      console.log(res) */
+
+      // 数组中的every方法
+      /* Array.prototype.myEvery = function (callback) {
+            let flag = true;
+            for (let i = 0; i < this.length; i++) {
+              if (!callback(this[i], i)) {
+                flag = false;
+                break;
+              }
+            }
+            return flag;
+          };
+
+          console.log([1, 2, 3, 4, -5, 6].myEvery((item, index) => item > 0)); */
+
+      // 实现数组中的filter方法
+      /* Array.prototype.myFiler = function (callback) {
+            const res = [];
+            for (let i = 0; i < this.length; i++) {
+              if (callback(this[i], i)) {
+                res.push(this[i]);
+              }
+            }
+            return res;
+          };
+
+          console.log([1, 2, 3, 4].myFiler((item, index) => item > 2)); */
+
+      // 实现数组中find方法
+      /* Array.prototype.myFind = function (callback) {
+      	for (let i = 0; i < this.length; i++) {
+      		if (callback(this[i], i)) {
+      			return this[i]
+      		}
+      	}
+
+      }
+      console.log([1, 2, 3, 4, 5].myFind((item, index) => item > 2)) */
+
+      // 实现数组中的map方法
+      /* Array.prototype.myMap = function (callback) {
+      	const arr = []
+      	for (let i = 0; i < this.length; i++) {
+      		arr.push(callback(this[i], i))
+      	}
+      	return arr
+      }
+      console.log([1, 2, 3].myMap((item, index) => item * 2)) */
+
+      // 实现数组中的reduce方法
+      /*  Array.prototype.myReduce = function (callback, initValue) {
+            let prevValue = initValue;
+            for (let i = 0; i < this.length; i++) {
+              prevValue = callback(prevValue, this[i], i, this);
+            }
+            return prevValue;
+          };
+          const a = [1, 2, 3, 4].myReduce((pre, item, index) => {
+            return (pre += item);
+          }, 0);
+          console.log(a); */
+
+      // 数组中的sort
+      // console.log([4, 3, 2, 1].sort((a, b) => a - b)); // 从小到大
+      // console.log([4, 3, 2, 1].sort((a, b) => b - a)); // 从大到小
+
+      // 冒泡排序
+      function sortArr(arr) {
+        for (let i = 0; i < arr.length - 1; i++) {
+          for (let j = 0; j < arr.length - 1 - i; j++) {
+            arr[j] > arr[j + 1] &&
+              ([arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]);
+          }
+        }
+      }
+      var a = [4, 3, 2, 1];
+      sortArr(a);
+      console.log(a);
+    </script>
+  </body>
+</html>

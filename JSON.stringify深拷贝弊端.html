@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 1.如果要拷贝的对象里面有date对象，则JSON.stringify后通过JSON.parse之后， 时间将只是字符串的形式， 而不是对象的形式
+      // var test = {
+      //   name: 'a',
+      //   date: [new Date(1536627600000), new Date(1540047600000)],
+      // };
+      // console.log(test.date);
+
+      // let b;
+      // b = JSON.parse(JSON.stringify(test));
+      // console.log(b);
+
+      // 2.如果被拷贝的对象里面有正则表达式，则拷贝之后得到的是一个空对象
+      // const test = {
+      //   name: 'a',
+      //   date: new RegExp('\\w+'),
+      // };
+      // const copyed = JSON.parse(JSON.stringify(test));
+      // test.name = 'test';
+      // //console.error('ddd', test, copyed)；
+      // console.log(copyed);
+
+      // 3.如果被拷贝的对象里面有函数或者undefined, 则拷贝之后会把函数和undefined丢失
+      /* const test = {
+        name: 'a',
+        date: function hehe() {
+          console.log('fff');
+        },
+        a: undefined,
+      };
+      const copyed = JSON.parse(JSON.stringify(test));
+      test.name = 'test';
+      // console.error('ddd', test, copyed);
+      console.log(copyed); */
+
+      // 4.如果被拷贝的对象里面有NaN, 则拷贝之后会变成null
+      /* const test = {
+        name: 'a',
+        date: function hehe() {
+          console.log('fff');
+        },
+        a: NaN,
+      };
+      const copyed = JSON.parse(JSON.stringify(test));
+      console.log(copyed); */
+
+      // 5.如果被拷贝的对象里面是由构造函数生成， 则拷贝之后会丢失对象的constructor
+      /* function Person(name) {
+        this.name = name;
+        console.log(name);
+      }
+
+      const liai = new Person('liai');
+
+      const test = {
+        name: 'a',
+        date: liai,
+      };
+      const copyed = JSON.parse(JSON.stringify(test));
+      test.name = 'test';
+      console.log(test, copyed); */
+
+      // JSON.parse(JSON.stringfy(X))，其中X只能是Number, String, Boolean, Array,
+      // 扁平对象，即那些能够被 JSON 直接表示的数据结构
+
+      // 用JSON.stringify判断两数组/对象是否相等
+      // setTimeout
+      // console.log(
+      //   JSON.stringify([{ a: 1 }, 1]) === JSON.stringify([{ a: 1 }, 1])
+      // );
+    </script>
+  </body>
+</html>

@@ -17,7 +17,7 @@
       //   return res;
       // };
       Function.prototype.apply2 = function (context, args) {
-        let ctx = context || window;
+        let ctx = context || window; 
         ctx.__proto__.fn = this;
         let result = ctx.fn(...args);
         delete ctx.__proto__.fn;

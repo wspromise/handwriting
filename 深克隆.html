@@ -8,26 +8,7 @@
 
   <body>
     <script>
-      /*  function getType(target) {
-         return Object.prototype.toString.call(target).slice(8, -1);
-       }
-
-       function deepClone(obj) {
-         let res;
-         if (getType(obj) === 'Object') {
-           res = {};
-         } else if (getType(obj) === 'Array') {
-           res = [];
-         } else {
-           return obj;
-         }
-         for (let i in obj) {
-           res[i] = deepClone(obj[i]);
-         }
-         return res;
-       } */
-
-      function getDataType(target) {
+      /*  function getDataType(target) {
         return Object.prototype.toString.call(target).slice(8, -1);
       }
 
@@ -48,6 +29,34 @@
         debugger;
         for (const key in obj) {
           res[key] = deepClone(obj[key]);
+        }
+
+        return res;
+      } */
+
+      function getDataType(target) {
+        return Object.prototype.toString.call(target).slice(8, -1);
+      }
+
+      function deepClone(obj) {
+        let res;
+        switch (getDataType(obj)) {
+          case 'Object':
+            res = {};
+            break;
+          case 'Array':
+            res = [];
+            break;
+
+          default:
+            return obj;
+            break;
+        }
+
+        for (const key in obj) {
+          if (Object.hasOwnProperty.call(obj, key)) {
+            res[key] = deepClone(obj[key]);
+          }
         }
 
         return res;
